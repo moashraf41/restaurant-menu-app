@@ -1,0 +1,102 @@
+/* General Styles */
+body {
+  background-color: #fefae0;
+  font-family: "Poppins", sans-serif;
+  color: #264653;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Site Title */
+.site-title {
+  font-family: "Fredoka One", cursive;
+  color: #e76f51;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  animation: titleBounce 1.5s ease-in-out infinite;
+}
+
+/* Menu Container */
+.menu-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Card Styles */
+.menu-item {
+  width: 100%;
+  max-width: 300px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeIn 0.5s ease forwards;
+  border: none;
+}
+
+/* General card styling */
+/* General Card Styling */
+.menu-item-card {
+  border: none;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.menu-item-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Image Styling */
+.menu-item-card img {
+  height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+/* Title Styling */
+.menu-item-card .card-title {
+  color: #ffaa00; /* Primary color */
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+/* Category Text */
+.menu-item-card .category-text {
+  color: #6c757d; /* Muted text color */
+  font-size: 0.9rem;
+}
+
+/* Description Styling */
+.menu-item-card .card-description {
+  color: #555;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+/* Price Styling */
+.menu-item-card .card-price {
+  color: #28a745; /* Success color for emphasis */
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Availability Badge */
+.menu-item-card .availability-badge {
+  font-size: 0.85rem;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 12px;
+  color: #fff;
+}
+
+.menu-item-card .availability-badge.available {
+  background-color: #28a745; /* Green for available */
+}
+
+.menu-item-card .availability-badge.unavailable {
+  background-color: #dc3545; /* Red for unavailable */
+}

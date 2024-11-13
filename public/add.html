@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add New Menu Item</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+
+    <!-- Google Fonts -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;600&display=swap"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Include add.js -->
+    <script defer src="add.js"></script>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h2 class="text-center">Add New Menu Item</h2>
+
+      <!-- Logout Button -->
+      <div
+        id="logoutButton"
+        class="d-flex justify-content-end"
+        style="display: none"
+      >
+        <button id="logoutBtn" class="btn btn-danger">Logout</button>
+      </div>
+
+      <!-- Form to Add Menu Item -->
+      <form id="menuItemForm" class="mt-4" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="dish_name">Dish Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="dish_name"
+            name="dish_name"
+            required
+          />
+          <small class="error-message text-danger" id="dish_name_error"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select class="form-control" id="category" name="category" required>
+            <option value="">Select Category</option>
+            <option value="Appetizer">Appetizer</option>
+            <option value="Main Course">Main Course</option>
+            <option value="Dessert">Dessert</option>
+            <option value="Most Popular">Most Popular</option>
+          </select>
+          <small class="error-message text-danger" id="category_error"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="image">Image Upload</label>
+          <input
+            type="file"
+            class="form-control"
+            id="image"
+            name="image"
+            required
+          />
+          <small class="error-message text-danger" id="image_error"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            id="description"
+            name="description"
+            required
+            maxlength="200"
+          />
+          <small
+            class="error-message text-danger"
+            id="description_error"
+          ></small>
+        </div>
+
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input
+            type="number"
+            class="form-control"
+            id="price"
+            name="price"
+            required
+            min="0.01"
+            step="0.01"
+          />
+          <small class="error-message text-danger" id="price_error"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="availability">Availability</label>
+          <select
+            class="form-control"
+            id="availability"
+            name="availability"
+            required
+          >
+            <option value="available">Available</option>
+            <option value="unavailable">Unavailable</option>
+          </select>
+          <small
+            class="error-message text-danger"
+            id="availability_error"
+          ></small>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-lg btn-block">
+          Save Menu Item
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary btn-lg btn-block"
+          onclick="window.location.href='index.html'"
+        >
+          Back to Dashboard
+        </button>
+      </form>
+    </div>
+
+    <!-- Modal for success or error message -->
+    <div
+      class="modal fade"
+      id="responseModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="responseModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="responseModalLabel">Message</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="modalMessage">
+            <!-- The response message will go here -->
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inline Scripts -->
+    <script>
+      // Check login status on page load
+      async function checkLoginStatus() {
+        const response = await fetch("/check-login", { method: "GET" });
+
+        if (!response.ok) {
+          window.location.href = "/login.html";
+        } else {
+          document.getElementById("logoutButton").style.display = "block";
+        }
+      }
+
+      // Logout function
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", async () => {
+          const response = await fetch("/logout", { method: "POST" });
+
+          if (response.ok) {
+            window.location.href = "/login.html";
+          } else {
+            alert("Logout failed!");
+          }
+        });
+
+      // Call checkLoginStatus on page load
+      checkLoginStatus();
+    </script>
+
+    <!-- Include jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

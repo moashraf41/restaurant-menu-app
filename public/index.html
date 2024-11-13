@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Restaurant Menu Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <!-- Google Fonts -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;600&display=swap"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Include index.js -->
+    <script defer src="index.js"></script>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h2 class="text-center">Restaurant Menu Dashboard</h2>
+      <div id="logoutButton" class="d-flex justify-content-end">
+        <button id="logoutBtn" class="btn btn-danger">Logout</button>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body text-center">
+          <a href="add.html" class="btn btn-success btn-lg"
+            >Add New Menu Item</a
+          >
+        </div>
+      </div>
+
+      <!-- Display existing menu items -->
+      <div class="mt-4" id="existingData">
+        <h4 class="mb-4">Existing Menu Items</h4>
+        <div id="dataDisplay">
+          <!-- JavaScript will dynamically load existing menu items here as cards -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Include jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

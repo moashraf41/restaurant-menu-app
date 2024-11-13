@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Restaurant Menu</title>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <!-- Google Fonts for a playful font style -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;600&display=swap"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css" />
+    <!-- Supabase Script -->
+  </head>
+  <body>
+    <div class="container my-5">
+      <header class="text-center mb-5">
+        <h1 class="display-4 site-title">Welcome to Our Restaurant</h1>
+        <p class="lead">Explore our delicious and delightful menu below!</p>
+      </header>
+
+      <!-- Search Filters -->
+      <div class="row mb-5">
+        <div class="col-md-6 mb-3 mb-md-0">
+          <input
+            id="searchByName"
+            type="text"
+            class="form-control"
+            placeholder="Search by dish name"
+          />
+        </div>
+        <div class="col-md-6">
+          <select id="searchByCategory" class="form-control">
+            <option value="">Select category</option>
+            <option value="Appetizer">Appetizer</option>
+            <option value="Main Course">Main Course</option>
+            <option value="Dessert">Dessert</option>
+            <option value="Most Popular">Most Popular</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="menuContainer" class="row">
+        <!-- Menu items will be displayed here dynamically -->
+      </div>
+    </div>
+
+    <!-- Include the socket.io client library (if needed for real-time updates) -->
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Custom JS Script for Loading Menu Items -->
+    <script src="js/script.js" defer></script>
+  </body>
+</html>

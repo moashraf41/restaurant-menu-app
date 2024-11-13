@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Menu Item</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <!-- Google Fonts -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;600&display=swap"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Include edit.js -->
+    <script defer src="edit.js"></script>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h2 class="text-center">Edit Menu Item</h2>
+
+      <!-- Logout Button -->
+      <div id="logoutButton" class="d-flex justify-content-end">
+        <button id="logoutBtn" class="btn btn-danger">Logout</button>
+      </div>
+
+      <!-- Form for editing menu item -->
+      <form id="entryForm" class="mt-4" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="dish_name">Dish Name</label>
+          <input type="text" class="form-control" id="dish_name" required />
+          <span class="error-message text-danger" id="dish_name_error"></span>
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select class="form-control" id="category" required>
+            <option value="">Select Category</option>
+            <option value="Appetizer">Appetizer</option>
+            <option value="Main Course">Main Course</option>
+            <option value="Dessert">Dessert</option>
+            <option value="Most Popular">Most Popular</option>
+          </select>
+          <span class="error-message text-danger" id="category_error"></span>
+        </div>
+        <div class="form-group">
+          <label for="image_src">Upload Image</label>
+          <input
+            type="file"
+            class="form-control"
+            id="image_src"
+            accept="image/*"
+          />
+          <img
+            src=""
+            id="image_preview"
+            alt="Image preview"
+            style="display: none; max-height: 150px"
+          />
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea
+            class="form-control"
+            id="description"
+            maxlength="200"
+            required
+          ></textarea>
+          <span class="error-message text-danger" id="description_error"></span>
+        </div>
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input
+            type="number"
+            class="form-control"
+            id="price"
+            required
+            min="0.01"
+            step="0.01"
+          />
+          <span class="error-message text-danger" id="price_error"></span>
+        </div>
+        <div class="form-group">
+          <label for="availability">Availability</label>
+          <select class="form-control" id="availability" required>
+            <option value="available">Available</option>
+            <option value="unavailable">Unavailable</option>
+          </select>
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-success btn-lg btn-block"
+          onclick="updateMenuItem()"
+        >
+          Save Changes
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary btn-lg btn-block"
+          onclick="window.location.href='index.html'"
+        >
+          Cancel
+        </button>
+      </form>
+    </div>
+
+    <!-- Modal for success message -->
+    <div
+      class="modal fade"
+      id="successModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="successModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="successModalLabel">Success</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Your menu item has been updated successfully!
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="redirectToMenu()"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Include jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

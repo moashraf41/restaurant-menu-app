@@ -1,0 +1,42 @@
+body {
+  background-color: #fefae0;
+  font-family: "Poppins", sans-serif;
+}
+
+h2,
+h5,
+h4 {
+  font-family: "Fredoka One", cursive;
+  color: #e76f51;
+}
+
+.container {
+  max-width: 900px;
+}
+
+.card {
+  border-radius: 15px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.menu-item-card {
+  padding: 1.5rem;
+}
+
+.card img {
+  border-radius: 8px;
+  max-height: 150px;
+  width: 258px;
+  object-fit: cover;
+}
+
+.card .btn-warning {
+  background-color: #f4a261;
+  color: #fff;
+}
+
+.card .btn-danger {
+  background-color: #e63946;
+  color: #fff;
+}
