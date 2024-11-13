@@ -1,5 +1,5 @@
 // server.js
-const mime = require("mime-types"); // Add this at the top of server.js if not already included
+
 const express = require("express");
 const { createClient } = require("@supabase/supabase-js");
 const path = require("path");
@@ -9,13 +9,14 @@ const socketIo = require("socket.io");
 const bcrypt = require("bcryptjs");
 const multer = require("multer");
 const session = require("express-session");
+const mime = require("mime-types");
 require("dotenv").config(); // Load environment variables from .env file
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Supabase setup
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -47,8 +48,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Session middleware
 app.use(
   session({
-    secret:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJvaXZta3VxYXVseXd3anZ1dWxrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzEzNDYwNjksImV4cCI6MjA0NjkyMjA2OX0.M3pKhR3iQOoJZTG9yKmMZWoiBZi0pMP7OQGDRrtjJqA", // Replace with your own secret
+    secret: process.env.SESSION_SECRET || "your-secret-key", // Use env variable for secret
     resave: false,
     saveUninitialized: true,
   })
@@ -158,50 +158,6 @@ app.get("/api/menu-items/:id", async (req, res) => {
       return res.status(404).json({ error: "Menu item not found" });
     }
     res.json(data);
-  } catch (err) {
-    console.error("Unexpected error:", err);
-    res.status(500).json({ error: "An unexpected error occurred." });
-  }
-});
-
-// Update a menu item with image upload
-app.put("/api/menu-items/:id", upload.single("image"), async (req, res) => {
-  const { id } = req.params;
-  const { dish_name, category, description, price, availability } = req.body;
-  let image_src = null;
-
-  // Convert availability to boolean if necessary
-  const availabilityBoolean =
-    availability === "available" || availability === "true";
-
-  // Code for uploading image to Supabase (if provided)...
-
-  const updateData = {
-    dish_name,
-    category,
-    description,
-    price: parseFloat(price),
-    availability: availabilityBoolean,
-  };
-  if (image_src) updateData.image_src = image_src;
-
-  try {
-    // Add the updated code here to log any errors with Supabase update
-    const { data: updatedItem, error } = await supabase
-      .from("menu_items")
-      .update(updateData)
-      .eq("id", id)
-      .single();
-
-    if (error) {
-      console.error("Supabase update error:", error, "ID:", id);
-      return res
-        .status(404)
-        .json({ error: "Menu item not found or update failed" });
-    }
-
-    io.emit("menu-item-updated", updatedItem);
-    res.json(updatedItem);
   } catch (err) {
     console.error("Unexpected error:", err);
     res.status(500).json({ error: "An unexpected error occurred." });
@@ -325,7 +281,7 @@ app.put("/api/menu-items/:id", upload.single("image"), async (req, res) => {
       console.error("Error updating menu item:", error);
       return res
         .status(404)
-        .json({ error: "Menu item not found or update failed" });
+        .json({ error: "Menu item not found or failed to update" });
     }
 
     io.emit("menu-item-updated", updatedItem);
@@ -339,75 +295,28 @@ app.put("/api/menu-items/:id", upload.single("image"), async (req, res) => {
 // Delete a menu item
 app.delete("/api/menu-items/:id", async (req, res) => {
   const { id } = req.params;
+
   try {
-    // First, get the menu item to retrieve the image path
-    const { data: menuItem, error: fetchError } = await supabase
+    const { data, error } = await supabase
       .from("menu_items")
-      .select("image_src")
+      .delete()
       .eq("id", id)
       .single();
 
-    if (fetchError || !menuItem) {
-      console.error("Error fetching menu item:", fetchError);
+    if (error || !data) {
+      console.error("Error deleting menu item:", error);
       return res.status(404).json({ error: "Menu item not found" });
     }
 
-    const imagePath = menuItem.image_src;
-
-    // Delete the image from Supabase storage
-    if (imagePath) {
-      const { error: deleteImageError } = await supabase.storage
-        .from("uploads")
-        .remove([imagePath]);
-
-      if (deleteImageError) {
-        console.error("Error deleting image from Supabase:", deleteImageError);
-        // Continue even if image deletion fails
-      }
-    }
-
-    // Delete the menu item
-    const { error } = await supabase.from("menu_items").delete().eq("id", id);
-    if (error) {
-      console.error("Error deleting menu item:", error);
-      return res.status(500).json({ error: "Failed to delete menu item" });
-    }
-
-    io.emit("menu-item-deleted", id);
-    res.json({ message: "Menu item deleted successfully" });
+    io.emit("menu-item-deleted", data);
+    res.status(200).json({ message: "Menu item deleted" });
   } catch (err) {
     console.error("Unexpected error:", err);
     res.status(500).json({ error: "An unexpected error occurred." });
   }
 });
 
-// Serve images from Supabase Storage
-app.get("/api/image", async (req, res) => {
-  const path = req.query.path;
-  console.log("Requested image path:", path);
-  try {
-    const { data, error } = await supabase.storage
-      .from("uploads")
-      .download(path);
-
-    if (error) {
-      console.error("Error downloading image from Supabase:", error);
-      return res.status(500).send("Failed to retrieve image");
-    }
-
-    // Get the content type based on the file extension
-    const contentType = mime.lookup(path) || "application/octet-stream";
-
-    // Set appropriate headers
-    res.set("Content-Type", contentType);
-    res.send(Buffer.from(await data.arrayBuffer()));
-  } catch (err) {
-    console.error("Unexpected error:", err);
-    res.status(500).send("An unexpected error occurred.");
-  }
-});
-
 // Start the server
 server.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
